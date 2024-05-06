@@ -1,0 +1,53 @@
+{% extends 'wepay/base.html' %}
+
+{% block title %}WePay: Zahlung{% endblock %}
+
+{% block content %}
+{% include 'wepay/navbar.html' %}
+<div class="d-flex justify-content-center"> 
+    <div class="d-flex flex-column justify-content-center shadow-lg p-3 mt-5 bg-body rounded" style="width: 800px;">
+        <h2 class="text-center rounded p-3 mb-5" style="background-color: rgba(20, 44, 142, 1);">
+            <span class="text-white">Zahlung</span>
+            <a href="{% url 'wepay:index' %}" class="text-white" style="float:right;"><i class="bi bi-x-square"></i></a>
+        </h2>
+        <div class="d-flex flex-row justify-content-center mb-5">
+            <form action="{% url 'wepay:add_payment' %}" method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1" style="background-color: rgba(20, 44, 142, 1);">Von</span>
+                    <select class="form-control" name="from_user_id" required>
+                        <option value="" selected disabled>Nutzer auswählen...</option>
+                        {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1" style="background-color: rgba(20, 44, 142, 1);">Beschreibung</span>
+                    <input type="text" class="form-control" placeholder="Anlass" name="description" required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1" style="background-color: rgba(20, 44, 142, 1);">Betrag</span>
+                    <input type="number"  step="any" min=0 class="form-control" name="amount" required>
+                    <span class="input-group-text text-white" style="background-color: rgba(20, 44, 142, 1);">€</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1" style="background-color: rgba(20, 44, 142, 1);">Für</span>
+                    <div class="form-check mt-2">
+                        {% for user in users %}
+                        <input type="checkbox" name="user" value="{{ user.id }}">
+                        <label class="form-check-label" for="flexRadioDefault">{{ user.name }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="background-color: rgba(20, 44, 142, 1);">Hinzufügen</button>
+            </form>
+        </div>        
+    </div>
+</div>
+
+
+
+
+{% include 'wepay/footer.html' %}
+{% endblock %}

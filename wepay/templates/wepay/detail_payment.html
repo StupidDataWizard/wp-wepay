@@ -1,0 +1,52 @@
+{% extends 'wepay/base.html' %}
+{% load static %}
+{% block title %}WePay: Zahlungsdetail{% endblock %}
+
+{% block content %}
+{% include 'wepay/navbar.html' %}
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column shadow-lg mt-5 p-3 bg-body rounded" style="width: 800px;">
+        <h2 class="text-center rounded p-3" style="background-color: rgba(20, 44, 142, 1);">
+            <span class="text-white">{{payment.description}}</span>
+            <a href="{% url 'wepay:index' %}" class="text-white" style="float:right;"><i class="bi bi-x-square"></i></a>
+        </h2>
+        <div class="d-flex flex-row shadow-lg p-3 mt-5 bg-body rounded">
+            <div class="d-flex flex-column">
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1); width: 100px;">Datum:</span>
+                    <span class="input-group-text">{{payment.datetime | date:'Y.m.d'}}</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1); width: 100px;">Von:</span>
+                    <span class="input-group-text">{{payment.from_user.name}}</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1); width: 100px;">Betrag:</span>
+                    <span class="input-group-text">{{payment.amount}}</span>
+                    <span class="input-group-text text-white" style="background-color: rgba(20, 44, 142, 1);">€</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1); width: 100px;">Für:</span>
+                    <span class="input-group-text p-0">
+                        <ul class="list-group m-0">
+                            {% for user in for_users %}
+                            <li class="list-group-item">{{user.user.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            <img src="{% static 'wepay/wepay_detail_payment.jpeg' %}" class="rounded mx-auto d-block" alt="...">
+        </div>
+        <div class="d-flex flex-column shadow-lg mt-5 p-3 bg-body rounded" style="width: 150px ;float:right">
+            <a href="{% url 'wepay:delete_payment' payment.id%}" class="btn btn-danger px-4"><i class="bi bi-trash-fill"
+                    style="font-size: 3rem;"></i></a>
+        </div>
+    </div>
+</div>
+{% include 'wepay/footer.html' %}
+{% endblock %}

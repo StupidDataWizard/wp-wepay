@@ -1,0 +1,28 @@
+{% extends 'wepay/base.html' %}
+
+{% block title %}WePay: MatPlot{% endblock %}
+
+{% block content %}
+{% include 'wepay/navbar.html' %}
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column justify-content-center shadow-lg p-3 mt-5 bg-body rounded" style="width: 900px;">
+        <h2 class="text-center rounded p-3" style="background-color: rgba(20, 44, 142, 1);">
+            <span class="text-white">Salden der Nutzer</span>
+        </h2>
+        {% if chart %}
+            <img src="data:image/png;base64, {{chart|safe}}">
+        {% endif %}       
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% include 'wepay/footer.html' %}
+{% endblock %}

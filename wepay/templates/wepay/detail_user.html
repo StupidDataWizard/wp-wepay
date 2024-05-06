@@ -1,0 +1,62 @@
+{% extends 'wepay/base.html' %}
+
+{% block title %}WePay: {{user.name}}{% endblock %}
+
+{% block content %}
+{% include 'wepay/navbar.html' %}
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-row justify-content-center shadow-lg p-3 mt-5 bg-body rounded" style="width: 800px;">
+        <div>
+            <h1 class="text-center">{{user.name}}</h1>
+            <div class="d-flex justify-content-center">
+                <i class="bi bi-person-circle" style="font-size: 7rem;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column justify-content-center shadow-lg p-3 mt-5 bg-body rounded" style="width: 800px;">
+        <h2 class="text-center rounded p-3 mb-5" style="background-color: rgba(20, 44, 142, 1);">
+            <span class="text-white">Meine Zahlungen</span>
+        </h2>
+        <table class="table">
+            <tr>
+                <th>Beschreibung</th>
+                <th>Betrag</th>
+                <th>Für</th>
+            </tr>
+            {% if payments %}
+            {% for payment in payments %}
+            <tr>
+                <td>{{payment.description}}</td>
+                <td>{{payment.amount}} € </td>
+                <td>{{payment.for_users_string}}</td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="4">Aktuell wurden keine Zahlungen getätigt...</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-row justify-content-center shadow-lg p-3 mt-5 bg-body rounded" style="width: 800px;">
+        <div class="shadow-lg p-3 m-2 bg-body rounded" style="width: 350px;">
+            <h2 class="text-center rounded p-3 mb-5" style="background-color: rgba(20, 44, 142, 1);">
+                <span class="text-white">Saldo</span>
+            </h2>
+            <h1 class="text-center p-3 m-2 bg-body rounded">{{user.get_saldo |floatformat:2}} €</h1>
+        </div>
+        <div class="p-3 m-2 bg-body rounded" style="width: 350px;">
+            <div class="d-flex justify-content-center">
+                <a href="{% url 'wepay:delete_user' user.id %}" class="btn btn-danger ps-4 {% if not deletable %}disabled{% endif %}"  >
+                    <i class="bi bi-person-x" style="font-size: 5rem;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'wepay/footer.html' %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'wepay/base.html' %}
+
+{% block title %}WePay: Zahlungsdetail{% endblock %}
+
+{% block content %}
+{% include 'wepay/navbar.html' %}
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-column shadow-lg mt-5 p-3 bg-body rounded" style="width: 800px;">
+        <h2 class="text-center rounded p-3" style="background-color: rgba(20, 44, 142, 1);">
+            <span class="text-white">{{payment.description}}</span>
+            <a href="{% url 'wepay:index' %}" class="text-white" style="float:right;"><i class="bi bi-x-square"></i></a>
+        </h2>
+        <div class="d-flex flex-row justify-content-center my-5">
+            <form class="p-5 mb-5 shadow-lg rounded" action="" method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1);">Von</span>
+                    <select class="form-control" name="from_user_id" required>
+                        <option value="{{ user.user.id }}" selected disabled>{{payment.from_user.name}}</option>
+                        <!-- {% for user in for_users %} -->
+                        <!-- <option value="{{ user.id }}">{{ user.user.name }}</option> -->
+                        <!-- {% endfor %} -->
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1);">Beschreibung</span>
+                    <input type="text" class="form-control" value="{{payment.description}}" name="description" required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1);">Betrag</span>
+                    <input type="text" class="form-control" name="amount" value="{{payment.amount}}" required>
+                    <!-- <input type="number" step="any" min=0 class="form-control" name="amount" value="{{payment.amount}}" required> -->
+                    <span class="input-group-text text-white" style="background-color: rgba(20, 44, 142, 1);">€</span>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text text-white" id="basic-addon1"
+                        style="background-color: rgba(20, 44, 142, 1);">Für:</span>
+                    <span class="input-group-text p-0">
+                        <ul class="list-group m-0" style="width: 300px;">
+                            {% for user in for_users %}
+                            <li class="list-group-item">{{user.user.name}}</li>
+                            {% endfor %}
+                        </ul>
+                    </span>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary"
+                    style="background-color: rgba(20, 44, 142, 1);">Save</button>
+                    <a href="{% url 'wepay:delete_payment' payment.id%}" class="btn btn-danger px-4"><i
+                        class="bi bi-trash-fill" style="font-size: 2rem;"></i></a>
+
+                </div>
+                
+            </form>
+            <div class="shadow-lg p-3 bg-body rounded">
+                <a href="{% url 'wepay:delete_payment' payment.id%}" class="btn btn-danger px-4"><i
+                        class="bi bi-trash-fill" style="font-size: 3rem;"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'wepay/footer.html' %}
+{% endblock %}

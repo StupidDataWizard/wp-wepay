@@ -1,0 +1,98 @@
+{% extends 'wepay/base.html' %}
+
+{% block title %}WePay: Übersicht{% endblock %}
+
+{% block content %}
+{% include 'wepay/navbar.html' %}
+<div class="d-flex justify-content-center">
+    <div class="d-flex flex-row justify-content-center shadow-lg p-3 mt-5 bg-body rounded" style="width: 900px;">
+        <div class="container-lg p-3 m-2">
+            <h1 class="mt-5">Hallo ヾ(⌐■_■)ノ♪</h1>
+        </div>
+        <div class="shadow-lg p-3 m-4 bg-body rounded" style="width: 600px;">
+            <h2 class="text-center">Wer muss zahlen?</h2>
+            <div class="d-flex justify-content-center">
+                <i class="bi bi-person-circle" style="font-size: 7rem;"></i>
+            </div>
+            <div class="d-flex justify-content-center">
+                <h1>{{who_is_next}}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <div class="shadow-lg p-4 m-5 bg-body rounded" style="width: 900px;">
+        <div class="d-flex flex-row justify-content-center">
+            <div class="p-2">
+                <ul class="list-group shadow-lg bg-body rounded" style="width: 550px;">
+                    <li class="list-group-item" style="background-color: rgba(20, 44, 142, 1);"><span
+                            class="text-white">Zahlungen</span></li>
+                    <li class="list-group-item border-bottom-0">
+                        <table class="table">
+                            <tr>
+                                <th>Datum</th>
+                                <th>Von</th>
+                                <th>Beschreibung</th>
+                                <th>Betrag</th>
+                                <th>Für</th>
+                            </tr>
+                            {% if payments %}
+                            {% for payment in payments %}
+                            <tr>
+                                <td>{{payment.datetime.date | date:'Y.m.d'}}</td>
+                                <td>{{payment.from_user.name}}</td>
+                                <td><a href="{% url 'wepay:detail_payment' payment.id%}">{{payment.description}}</a></td>
+                                <td>{{payment.amount}} € </td>
+                                <td>{{payment.for_users_string}}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4">Aktuell wurden keine Zahlungen getätigt...</td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="{% url 'wepay:view_payment_form' %}" class="btn btn-primary m-3 justify-content-end"
+                            style="background-color: rgba(20, 44, 142, 1);"><i class="bi bi-plus-circle"></i></a>
+                    </li>
+                    <li class="list-group-item" style="background-color: rgba(20, 44, 142, 1);">
+                        <span class="text-white">Gesamtsumme: {{overall_payment_amount}}€</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-2">
+                <ul class="list-group shadow-lg bg-body rounded" style="width:225px;">
+                    <li class="list-group-item" style="background-color: rgba(20, 44, 142, 1);">
+                        <span class="text-white">Nutzer | Saldo</span>
+                    </li>
+                    {% if users %}
+                    {% for user in users %}
+                    <li class="list-group-item"><a class="text-decoration-none"
+                            href="{% url 'wepay:detail_user' user.id %}">{{user.name}} </a><i class="bi bi-bank"></i>
+                        {{user.get_saldo |floatformat:2}} Euro
+                    </li>
+                    {% endfor %}
+                    {% else %}
+                    <li class="list-group-item">Keine Nutzer registriert...</li>
+                    {% endif %}
+                    <li class="list-group-item">
+                        <form action="{% url 'wepay:add_user' %}" method="post">
+                            {% csrf_token %}
+                            <div class="input-group">
+                                <input class="form-control" type="text" name="user_name" placeholder="Name...">
+                                <button type="submit" class="btn btn-primary ml-1"
+                                    style="background-color: rgba(20, 44, 142, 1);"><i
+                                        class="bi bi-person-plus-fill"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'wepay/footer.html' %}
+{% endblock %}

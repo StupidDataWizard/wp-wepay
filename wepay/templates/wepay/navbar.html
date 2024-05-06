@@ -1,0 +1,23 @@
+{% load static %}
+
+<nav class="navbar navbar-dark text-white" style="background-color: rgba(20, 44, 142, 1);">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'wepay/wepay.svg' %}" alt="" width="30" height="24"
+                class="d-inline-block align-text-top">
+            <span class="navbar-brand mb-0 h1 ml-0">WePay</span>
+        </a>
+        <ul class="me-auto mb-2 mb-lg-0" >
+            <li class="pe-3" style="display:inline">
+                <a class="text-decoration-none text-white" href="{% url 'wepay:index' %}">Übersicht</a>
+            </li>
+            <li class="pe-3" style="display:inline">
+                <a class="text-decoration-none text-white disabled" href="{% url 'wepay:matplot_view' %}">Features</a>
+            </li>
+            <li class="pe-3" style="display:inline">
+                <a class="text-decoration-none text-white disabled" href="#">About</a>
+            </li>
+        </ul>
+    </div>
+
+</nav>
